@@ -1,8 +1,10 @@
 package br.com.wagner.casadocodigo
 
+import br.com.wagner.casadocodigo.novoAutor.model.Autor
 import br.com.wagner.casadocodigo.novoAutor.repository.AutorRepository
 import br.com.wagner.casadocodigo.novoAutor.request.NovoAutorRequest
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +34,11 @@ class NovoAutorControllerTest() {
 
     @field:Autowired
     lateinit var mockMvc: MockMvc
+
+    @AfterEach
+    internal fun tearDown() {
+        autorRepository.deleteAll()
+    }
 
     // 1 cenario de testes / caminho feliz
 
@@ -105,6 +112,25 @@ class NovoAutorControllerTest() {
         // cenario
 
         val request = NovoAutorRequest(nome = "Joao", email = "joaoemail.com", descricao = "Um autor legal")
+
+        val uri: URI = URI("/autores")
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(request))).andExpect(MockMvcResultMatchers.status().`is`(400))
+    }
+
+    // 5 cenario de testes
+
+    @Test
+    @DisplayName("deve retornar 400, ao tentar cadastrar um novo autor com email ja cadastrado")
+    fun deveRetornar400AoTentarCadastrarEmailJaCadastrado(): Unit {
+        // cenario
+
+        val autor = Autor(nome = "Carlos", email = "joao@gmail.com",descricao = "Um Autor mais ou menos")
+        autorRepository.save(autor)
+
+        val request = NovoAutorRequest(nome = "Joao", email = "joao@gmail.com", descricao = "Um autor legal")
 
         val uri: URI = URI("/autores")
 

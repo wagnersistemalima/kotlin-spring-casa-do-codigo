@@ -26,4 +26,14 @@ class ResourceExceptionHandller {
 
         return ResponseEntity.status(status).body(error)
     }
+
+    // metodo para captar exceção de campo unico
+
+    @ExceptionHandler(ExceptionGenericValidated::class)
+    fun campoUnico(e: ExceptionGenericValidated, request: HttpServletRequest): ResponseEntity<Any> {
+        val status = HttpStatus.BAD_REQUEST
+        val error = ValidationError(Instant.now(), status.value(), "Campo unico", message = e.message!!, path = request.requestURI)
+
+        return  ResponseEntity.status(status).body(error)
+    }
 }
