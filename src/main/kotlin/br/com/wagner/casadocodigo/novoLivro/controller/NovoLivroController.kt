@@ -37,6 +37,9 @@ class NovoLivroController(
         if(livroRepository.existsByTitulo(request.titulo)) {
             throw ExceptionGenericValidated("Campo unico, titulo já cadastrado para este livro")
         }
+        if(livroRepository.existsByIsbn(request.isbn)) {
+            throw ExceptionGenericValidated("Campo unico, isbn já cadastrado para este livro")
+        }
 
         val livro = request.toModel(autorRepository, categoriaRepository)
         livroRepository.save(livro)

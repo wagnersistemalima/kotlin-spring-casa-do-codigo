@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 interface LivroRepository: JpaRepository<Livro, Long> {
 
     fun existsByTitulo(titulo: String): Boolean
+
+    fun existsByIsbn(isbn: String): Boolean
 }

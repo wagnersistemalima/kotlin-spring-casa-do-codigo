@@ -389,7 +389,66 @@ class NovoLivroControllerTest {
         // assertivas
 
     }
-    
+
+    // 7 cenario de teste
+
+    @Test
+    @DisplayName("deve retornar 400, quando isbn já estiver cadastrado")
+    fun deveRetornar400IsbnJaExiste() {
+
+        // cenario
+
+        val autor = Autor(
+            nome = "Carol",
+            email = "carol@gmail.com",
+            descricao = "uma autora legal"
+        )
+        autorRepository.save(autor)
+        val idAutor: Long? = autor.id
+
+
+        val categoria = Categoria(nome = "Romance")
+        categoriaRepository.save(categoria)
+        val idCategoria: Long? = categoria.id
+
+        val livro = Livro(
+            titulo = "O homem de ferro",
+            resumo = "livro ação",
+            sumario = "explicativo",
+            preco = BigDecimal(50.0),
+            numeroPagina = 200,
+            isbn = "uytrtg",
+            dataPublicacao = LocalDate.now().plusDays(1L),
+            categoria = categoria,
+            autor = autor
+        )
+        livroRepository.save(livro)
+
+        val uri = URI("/livros")
+
+        val request = NovoLivroRequest(
+            titulo = "Sao joao",
+            resumo = "livro maravilhoso",
+            sumario = "explicativo",
+            preco = BigDecimal(50.0),
+            numeroPagina = 200,
+            isbn = "uytrtg",
+            dataPublicacao = LocalDate.now().plusDays(1L),
+            idCategoria = idCategoria!!,
+            idAutor = idAutor!!
+        )
+
+        mockmvc.perform(MockMvcRequestBuilders.post(uri)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(request)))
+            .andExpect(MockMvcResultMatchers.status().`is`(400))
+
+        // ação
+
+        // assertivas
+
+    }
+
     // metodo para desserializar objeto da requisição
 
     fun toJson(request: NovoLivroRequest): String {
