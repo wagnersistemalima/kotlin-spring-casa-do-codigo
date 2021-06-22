@@ -12,7 +12,6 @@ class Livro(
     @field:Column(unique = true)
     val titulo: String,
 
-
     val resumo: String,
 
     val sumario: String,
