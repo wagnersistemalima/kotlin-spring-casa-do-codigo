@@ -6,6 +6,7 @@ import br.com.wagner.casadocodigo.novoPais.request.NovoPaisRequest
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,6 +23,7 @@ class NovoPaisController(@field:Autowired val paisRepository: PaisRepository) {
 
     // end point / insert
 
+    @Transactional
     @PostMapping
     fun insert(@Valid @RequestBody request: NovoPaisRequest): ResponseEntity<Any> {
 
