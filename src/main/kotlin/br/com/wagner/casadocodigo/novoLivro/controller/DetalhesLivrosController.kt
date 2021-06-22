@@ -36,6 +36,7 @@ class DetalhesLivrosController(@field:Autowired val livroRepository: LivroReposi
 
         val livro = possivelLivro.get()
 
+        logger.info("busca por id do livro concluido com sucesso")
         return ResponseEntity.ok().body(DetalhesLivroResponse(livro))
     }
 }
