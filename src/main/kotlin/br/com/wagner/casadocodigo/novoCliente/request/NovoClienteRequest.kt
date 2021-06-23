@@ -40,18 +40,18 @@ data class NovoClienteRequest(
 
     fun toModel(paisRepository: PaisRepository, estadoRepository: EstadoRepository): Cliente {
 
-        // validação
-
-        if(!paisRepository.existsById(idPais)) {
-            throw ExceptionGenericValidated("Id do pais não existe")
-        }
-
-        if(!estadoRepository.existsById(idEstado)) {
-            throw  ExceptionGenericValidated("Id estado não existe")
-        }
-
         val possivelPais = paisRepository.findById(idPais)
         val possivelEstado = estadoRepository.findById(idEstado)
+
+        // validação
+
+        if(possivelPais.isEmpty) {
+            throw ExceptionGenericValidated("id do pais não existe")
+        }
+
+        if(possivelEstado.isEmpty) {
+            throw ExceptionGenericValidated("id do estado não existe")
+        }
 
         val pais = possivelPais.get()
         val estado = possivelEstado.get()

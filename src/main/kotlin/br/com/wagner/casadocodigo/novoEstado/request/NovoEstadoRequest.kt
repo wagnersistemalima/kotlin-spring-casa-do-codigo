@@ -16,6 +16,7 @@ data class NovoEstadoRequest(
     val idPais: Long
 ) {
 
+
     // metodo para converter requisição em entidade
 
     fun toModel(paisRepository: PaisRepository): Estado {
